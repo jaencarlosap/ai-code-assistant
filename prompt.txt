@@ -1,0 +1,11 @@
+### Code Review Task
+Review the following code changes and ensure they follow best practices. 
+Flag issues like:
+- Presence of `console.log` statements.
+- Security vulnerabilities.
+- Unused variables.
+- Code efficiency improvements.
+
+```diff
+{code_diff}
+```
