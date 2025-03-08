@@ -28,7 +28,7 @@ def get_git_changes():
         return ""
 
 def analyze_code_with_ai(code_diff, model=MODEL_NAME):
-    """Send code changes to an Ollama model for review and stream the response."""
+    """Send code changes to an Ollama model for review."""
     try:
         with open(PROMPT_FILE_PATH, "r") as file:
             prompt_template = file.read()
