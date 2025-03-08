@@ -1,68 +1,50 @@
-# Ai code assistant
+# AI Code Assistant
 
-This script reviews Git changes using an AI model from Ollama. It checks for best practices and potential issues in code changes before committing them.
+AI-powered Git code review using Ollama models.
 
-## Prerequisites
+## 🚀 Installation
 
-Ensure you have the following installed:
+Run the following commands to install the script globally:
 
-- Python 3.8+
-- Git
-- Ollama CLI ([Install Ollama](https://ollama.com))
-
-## Installation
-
-1. **Clone the repository** (or copy the script to your desired location):
-
-   ```sh
-   git clone https://github.com/jaencarlosap/ai-code-assistant
-   cd ai-code-assitant
-   ```
-
-2. **Install dependencies:**
-
-   ```sh
-   pip install ollama
-   ```
-
-3. **Download the AI model:**
-
-   ```sh
-   ollama pull qwen2.5-coder:7b
-   ```
-
-4. **Ensure you have a `prompt.txt` file in the same directory as the script.** Example:
-
-   ```txt
-   ### Code Review Task
-   Review the following code changes and ensure they follow best practices.
-
-   {code_diff}
-
-   ### Review Feedback:
-   ```
-
-## Usage
-
-Run the script inside a Git repository:
-
-```sh
-python script.py
+```bash
+chmod +x install.sh
+./install.sh
 ```
 
-## How It Works
+This will install the assistant in `~/.ai-code-assistant` and create a global command `ai-code`.
 
-- Fetches all unstaged and staged changes using `git diff`.
-- Loads a predefined prompt from `prompt.txt`.
-- Sends the changes to the AI model for review.
-- Streams the AI-generated suggestions to the console.
+## 📌 Usage
 
-## Troubleshooting
+### Run AI Code Review
 
-- If the script fails to find `prompt.txt`, ensure it's in the same directory.
-- If `ollama` command is not found, verify Ollama is installed and added to `PATH`.
-- If no changes are detected, check if your Git working directory has modifications.
+```bash
+ai-code --review
+```
 
-## License
+### Update to the Latest Version
 
-MIT License.
+```bash
+ai-code --update
+```
+
+### Show Help
+
+```bash
+ai-code --help
+```
+
+## 🔄 How It Works
+
+- Fetches Git changes (both staged & unstaged).
+- Sends them to an **Ollama AI model** for review.
+- Streams the AI response live in the terminal.
+
+## 🛠 Dependencies
+
+Make sure you have **Python 3** and **Ollama** installed:
+
+```bash
+pip install ollama
+```
+
+## 🚀 Enjoy AI-powered code reviews from anywhere!

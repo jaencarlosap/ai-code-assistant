@@ -1,36 +1,32 @@
 #!/bin/bash
 
-# Ensure script runs from its directory
-cd "$(dirname "$0")"
+INSTALL_DIR="$HOME/.ai-code-assistant"
+BIN_DIR="$HOME/.local/bin"
+EXECUTABLE_NAME="ai-code"
 
-# Function to get the latest version from GitHub
-get_latest_version() {
-    curl -s https://raw.githubusercontent.com/jaencarlosap/ai-code-assistant/main/VERSION
-}
+# Create necessary directories
+mkdir -p "$INSTALL_DIR"
+mkdir -p "$BIN_DIR"
 
-# Get the installed version
-INSTALLED_VERSION=$(cat VERSION)
-LATEST_VERSION=$(get_latest_version)
+# Copy all files to the installation directory
+cp -r ./* "$INSTALL_DIR"
 
-# Check if an update is needed
-if [[ "$INSTALLED_VERSION" != "$LATEST_VERSION" ]]; then
-    echo "🚀 A new version ($LATEST_VERSION) is available!"
-    echo "Run the following command to update:"
-    echo "  git pull && ./install.sh"
-    exit 0
+# Create a wrapper script for global execution
+echo "#!/bin/bash
+python3 $INSTALL_DIR/git_review.py \"\$@\"" > "$BIN_DIR/$EXECUTABLE_NAME"
+
+# Give execution permissions
+chmod +x "$BIN_DIR/$EXECUTABLE_NAME"
+
+# Add the bin directory to PATH if not already present
+if ! grep -qxF "export PATH=\$HOME/.local/bin:\$PATH" "$HOME/.bashrc"; then
+    echo "export PATH=\$HOME/.local/bin:\$PATH" >> "$HOME/.bashrc"
+fi
+if ! grep -qxF "export PATH=\$HOME/.local/bin:\$PATH" "$HOME/.zshrc"; then
+    echo "export PATH=\$HOME/.local/bin:\$PATH" >> "$HOME/.zshrc"
 fi
 
-echo "✅ You have the latest version: $INSTALLED_VERSION"
+# Reload shell configuration
+source "$HOME/.bashrc" 2>/dev/null || source "$HOME/.zshrc" 2>/dev/null
 
-# Install the package
-pip install --user .
-
-# Ensure the binary path is in the user's PATH
-USER_BIN="$HOME/.local/bin"
-if [[ ":$PATH:" != *":$USER_BIN:"* ]]; then
-    echo "export PATH=\"$USER_BIN:\$PATH\"" >> ~/.bashrc
-    echo "export PATH=\"$USER_BIN:\$PATH\"" >> ~/.zshrc
-    source ~/.bashrc || source ~/.zshrc
-fi
-
-echo "✅ Installation complete! You can now run 'git-review-ai'."
+echo "✅ Installation complete! You can now use 'ai-code' from anywhere."
