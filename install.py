@@ -5,6 +5,7 @@ import sys
 
 INSTALL_DIR = os.path.expanduser("~/.ai-code-assistant")
 REPO_URL = "https://github.com/jaencarlosap/ai-code-assistant.git"
+MODEL_NAME = "qwen2.5-coder:7b"
 
 def check_ollama():
     """Check if Ollama is installed, otherwise prompt to install."""
@@ -26,6 +27,30 @@ def check_ollama():
             print("❌ Ollama is required to run AI Code Assistant.")
             print("📦 Download from: https://ollama.com")
             sys.exit(1)
+
+def check_ollama_model():
+    """Check if the required Ollama model is installed."""
+    try:
+        result = subprocess.run(["ollama", "list"], capture_output=True, text=True, check=True)
+        installed_models = result.stdout
+
+        if MODEL_NAME in installed_models:
+            return True  # Model is installed
+        else:
+            print(f"❌ Model '{MODEL_NAME}' not found. Please install it using:\n")
+            # ask to install
+            choice = input("Do you want to install the model? (y/n): ").strip().lower()
+            if choice == "y":
+                subprocess.run(["ollama", "install", MODEL_NAME], check=True)
+                return True
+            else:
+                print("❌ Model is required to run AI Code Assistant.")
+                sys.exit()
+                return False
+
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Error checking for Ollama model: {e}")
+        return False
 
 def clone_repository():
     """Clone or update the repository."""
