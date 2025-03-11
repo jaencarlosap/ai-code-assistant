@@ -8,13 +8,23 @@ REPO_URL = "https://github.com/jaencarlosap/ai-code-assistant.git"
 
 def check_ollama():
     """Check if Ollama is installed, otherwise prompt to install."""
+    IS_LINUX = sys.platform.startswith("linux")
+    IS_MAC = sys.platform == "darwin"
+    IS_WINDOWS = sys.platform == "win32"
+
     if shutil.which("ollama") is None:
         print("⚠️ Ollama is not installed!")
         choice = input("Do you want to install Ollama? (y/n): ").strip().lower()
         if choice == "y":
-            subprocess.run(["curl", "-fsSL", "https://ollama.ai/install.sh", "|", "bash"], shell=True, check=True)
+            if IS_LINUX:
+                subprocess.run('curl -fsSL https://ollama.com/install.sh | sh', check=True)
+            elif IS_MAC:
+                subprocess.run(['brew', 'install', 'ollama'], check=True)
+            elif IS_WINDOWS:
+                print("📦 Download from: https://ollama.com")
         else:
             print("❌ Ollama is required to run AI Code Assistant.")
+            print("📦 Download from: https://ollama.com")
             sys.exit(1)
 
 def clone_repository():
