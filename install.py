@@ -86,6 +86,7 @@ def main():
     try:
         print("🚀 Installing AI Code Assistant...")
         check_ollama()
+        check_ollama_model()
         clone_repository()
         install_requirements()
         adding_alias()
