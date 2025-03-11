@@ -7,7 +7,7 @@ PYTHON_CMD = "python3"
 
 def run_code_review():
     """Run the code review script."""
-    subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "codereview.py")])
+    subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "git_review.py")])
 
 def update_script():
     """Run the updater script."""

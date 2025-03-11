@@ -4,7 +4,7 @@ import shutil
 INSTALL_DIR = os.path.expanduser("~/.ai-code-assistant")
 BASHRC = os.path.expanduser("~/.bashrc")
 ZSHRC = os.path.expanduser("~/.zshrc")
-ALIAS_CMD = "alias ai-code='python3 ~/.ai-code-assistant/git_review.py'"
+ALIAS_CMD = "alias ai-code='python3 {INSTALL_DIR}/main.py'"
 
 def remove_installation():
     """Removes the AI Code Assistant installation folder."""
