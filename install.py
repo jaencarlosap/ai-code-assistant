@@ -1,65 +1,42 @@
 import os
 import shutil
 import subprocess
+import sys
 
 INSTALL_DIR = os.path.expanduser("~/.ai-code-assistant")
-BASHRC = os.path.expanduser("~/.bashrc")
-ZSHRC = os.path.expanduser("~/.zshrc")
-ALIAS_CMD = "alias ai-code='python3 ~/.ai-code-assistant/git_review.py'"
+BIN_PATH = "/usr/local/bin/ai-code"
 
 def check_ollama():
-    """Check if Ollama is installed and prompt to install if missing."""
-    try:
-        subprocess.run(["ollama", "--version"], check=True, stdout=subprocess.DEVNULL)
-        print("✅ Ollama is already installed.")
-    except FileNotFoundError:
-        print("⚠️ Ollama is not installed.")
-        install = input("Do you want to install Ollama now? (y/n): ").strip().lower()
-        if install == "y":
-            subprocess.run(["curl", "-fsSL", "https://ollama.com/install.sh", "|", "sh"], shell=True)
+    """Check if Ollama is installed, otherwise prompt to install."""
+    if shutil.which("ollama") is None:
+        print("⚠️ Ollama is not installed!")
+        choice = input("Do you want to install Ollama? (y/n): ").strip().lower()
+        if choice == "y":
+            subprocess.run(["curl", "-fsSL", "https://ollama.ai/install.sh", "|", "bash"], check=True)
         else:
-            print("⚠️ Skipping Ollama installation.")
+            print("❌ Ollama is required to run AI Code Assistant.")
+            sys.exit(1)
 
-def create_install_dir():
-    """Creates the installation directory."""
-    if not os.path.exists(INSTALL_DIR):
-        os.makedirs(INSTALL_DIR)
-        print(f"✅ Created installation directory at {INSTALL_DIR}")
-    else:
-        print("✅ Installation directory already exists.")
-
-def copy_files():
-    """Copies necessary files to the installation directory."""
-    files_to_copy = ["git_review.py", "codereview.py", "updater.py", "prompt.txt"]
-    for file in files_to_copy:
-        if os.path.exists(file):
-            shutil.copy(file, INSTALL_DIR)
-            print(f"✅ Copied {file} to {INSTALL_DIR}")
-        else:
-            print(f"⚠️ Warning: {file} not found.")
-
-def add_alias(file_path):
-    """Adds alias to the shell configuration file."""
-    if os.path.exists(file_path):
-        with open(file_path, "r") as file:
-            if ALIAS_CMD in file.read():
-                return  # Alias already exists
+def setup_files():
+    """Download and move necessary files."""
+    os.makedirs(INSTALL_DIR, exist_ok=True)
     
-    with open(file_path, "a") as file:
-        file.write(f"\n{ALIAS_CMD}\n")
-    print(f"✅ Alias added to {file_path}")
+    # List of required files
+    files = ["git_review.py", "codereview.py", "updater.py", "prompt.txt"]
+
+    for file in files:
+        url = f"https://raw.githubusercontent.com/jaencarlosap/ai-code-assistant/main/{file}"
+        local_path = os.path.join(INSTALL_DIR, file)
+        subprocess.run(["curl", "-fsSL", "-o", local_path, url], check=True)
+        # Make main script executable
+        subprocess.run(["chmod", "+x", local_path], check=True)
+        
 
 def main():
-    print("🚀 Installing AI Code Assistant...")
-
+    print("📥 Installing AI Code Assistant...")
     check_ollama()
-    create_install_dir()
-    copy_files()
-    
-    add_alias(BASHRC)
-    add_alias(ZSHRC)
-
-    print("🎉 Installation complete! Restart your terminal or run 'source ~/.bashrc' (or 'source ~/.zshrc').")
+    setup_files()
+    print("✅ Installation complete! Run 'ai-code --help' to get started.")
 
 if __name__ == "__main__":
     main()

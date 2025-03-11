@@ -1,10 +1,23 @@
 #!/bin/bash
 
-# Ensure Python is installed
-if ! command -v python3 &> /dev/null; then
-    echo "❌ Python3 is not installed. Please install Python3 first."
-    exit 1
-fi
+# Exit on error
+set -e
 
-# Run the Python install script
-python3 install.py
+echo "🚀 Installing AI Code Assistant..."
+
+# Define install directory
+INSTALL_DIR="$HOME/.ai-code-assistant"
+
+# Create install directory
+mkdir -p "$INSTALL_DIR"
+
+# Download install.py
+echo "⬇️ Downloading installation script..."
+curl -fsSL -o "$INSTALL_DIR/install.py" "https://raw.githubusercontent.com/jaencarlosap/ai-code-assistant/main/install.py"
+
+# Run Python install script
+echo "⚙️ Running installation..."
+python3 "$INSTALL_DIR/install.py"
+
+echo "✅ Installation completed!"
+echo "➡️ Run 'ai-code --help' to get started."
