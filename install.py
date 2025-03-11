@@ -41,7 +41,7 @@ def check_ollama_model():
             # ask to install
             choice = input("Do you want to install the model? (y/n): ").strip().lower()
             if choice == "y":
-                subprocess.run(["ollama", "install", MODEL_NAME], check=True)
+                subprocess.run(["ollama", "pull", MODEL_NAME], check=True)
                 return True
             else:
                 print("❌ Model is required to run AI Code Assistant.")
