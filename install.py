@@ -66,28 +66,31 @@ def install_requirements():
     subprocess.run(["pip3", "install", "-r", f"{INSTALL_DIR}/requirements.txt"], check=True)
 
 def adding_alias():
+    """Add the 'ai-code' alias to the shell config file using sudo tee."""
     try:
-        """Add the 'ai-code' alias to the shell config file."""
         alias_cmd = f"alias ai-code='python3 {INSTALL_DIR}/main.py'"
         shell_config_files = [os.path.expanduser("~/.zshrc"), os.path.expanduser("~/.bashrc")]
 
         for file_path in shell_config_files:
             if os.path.exists(file_path):
-                with open(file_path, "a") as file:
-                    file.write(f"\n# AI Code Assistant\n{alias_cmd}\n")
-                    subprocess.run(["source", file_path])
+                subprocess.run(["sudo", "bash", "-c", f"echo '\n# AI Code Assistant\n{alias_cmd}' >> {file_path}"], check=True)
+                subprocess.run(["bash", "-c", f"source {file_path}"], check=True)
                 print(f"✅ Added alias to {file_path}")
-    except Exception:
-        print("❌ Error adding alias to shell config file.")
+
+    except Exception as e:
+        print(f"❌ Error adding alias: {e}")
     
 
 def main():
-    print("🚀 Installing AI Code Assistant...")
-    check_ollama()
-    clone_repository()
-    install_requirements()
-    adding_alias()
-    print("✅ Installation complete! Run 'ai-code --help' to get started.")
+    try:
+        print("🚀 Installing AI Code Assistant...")
+        check_ollama()
+        clone_repository()
+        install_requirements()
+        adding_alias()
+        print("✅ Installation complete! Run 'ai-code --help' to get started.")
+    except Exception:
+        print("❌ Operation cancelled.")
 
 if __name__ == "__main__":
     main()
