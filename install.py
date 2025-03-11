@@ -19,7 +19,7 @@ def check_ollama():
 
 def clone_repository():
     """Clone or update the repository."""
-    if os.path.exists(INSTALL_DIR):
+    if os.path.exists(INSTALL_DIR) and os.path.exists(os.path.join(INSTALL_DIR, ".git")):
         print("🔄 Updating AI Code Assistant...")
         subprocess.run(["git", "-C", INSTALL_DIR, "pull"], check=True)
     else:
