@@ -43,15 +43,14 @@ def install_requirements():
 def adding_alias():
     """Add the 'ai-code' alias to the shell config file."""
     alias_cmd = f"alias ai-code='python3 {INSTALL_DIR}/main.py'"
-    shell_config_files = [os.path.expanduser("~/.bashrc"), os.path.expanduser("~/.zshrc")]
+    shell_config_files = [os.path.expanduser("~/.zshrc"), os.path.expanduser("~/.bashrc")]
 
     for file_path in shell_config_files:
         if os.path.exists(file_path):
             with open(file_path, "a") as file:
                 file.write(f"\n# AI Code Assistant\n{alias_cmd}\n")
+                subprocess.run(["source", file_path])
             print(f"✅ Added alias to {file_path}")
-            # update the current shell session
-            subprocess.run(["source", file_path])
     
 
 def main():

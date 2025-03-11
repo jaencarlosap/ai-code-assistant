@@ -10,8 +10,8 @@ def run_code_review():
     subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "git_review.py")])
 
 def update_script():
-    """Run the updater script."""
-    subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "updater.py")])
+    """Run the update script."""
+    subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "update.py")])
 
 def uninstall_script():
     """Run the uninstaller script."""
@@ -29,22 +29,25 @@ Options:
 """)
 
 def main():
-    if len(sys.argv) < 2:
-        show_help()
-        return
+    try:
+        if len(sys.argv) < 2:
+            show_help()
+            return
 
-    command = sys.argv[1]
+        command = sys.argv[1]
 
-    if command == "--review":
-        run_code_review()
-    elif command == "--update":
-        update_script()
-    elif command == "--help":
-        show_help()
-    elif command.startswith("--uninstall"):
-        uninstall_script()
-    else:
-        print("❌ Unknown command. Use --help for options.")
+        if command == "--review":
+            run_code_review()
+        elif command == "--update":
+            update_script()
+        elif command == "--help":
+            show_help()
+        elif command.startswith("--uninstall"):
+            uninstall_script()
+        else:
+            print("❌ Unknown command. Use --help for options.")
+    except KeyboardInterrupt:
+        print("❌ Operation cancelled.")
 
 if __name__ == "__main__":
     main()
