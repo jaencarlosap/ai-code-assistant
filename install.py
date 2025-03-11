@@ -46,7 +46,8 @@ def adding_alias():
             with open(file_path, "a") as file:
                 file.write(f"\n# AI Code Assistant\n{alias_cmd}\n")
             print(f"✅ Added alias to {file_path}")
-
+            # update the current shell session
+            subprocess.run(["source", file_path])
     
 
 def main():
