@@ -12,6 +12,10 @@ def update_script():
     """Run the updater script."""
     subprocess.run(["python", os.path.join(SCRIPT_DIR, "updater.py")])
 
+def uninstall_script():
+    """Run the uninstaller script."""
+    subprocess.run(["python", os.path.join(SCRIPT_DIR, "uninstall.py")])
+
 def show_help():
     """Display help message."""
     print("""
@@ -36,6 +40,8 @@ def main():
         update_script()
     elif command == "--help":
         show_help()
+    elif command.startswith("--uninstall"):
+        uninstall_script()
     else:
         print("❌ Unknown command. Use --help for options.")
 

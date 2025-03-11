@@ -4,11 +4,10 @@ AI-powered Git code review using Ollama models.
 
 ## 🚀 Installation
 
-Run the following commands to install the script globally:
+Run the following command to install the script globally:
 
 ```bash
-chmod +x install.sh
-./install.sh
+curl -sS https://github.com/jaencarlosap/ai-code-assistant/blob/main/install.sh | bash
 ```
 
 This will install the assistant in `~/.ai-code-assistant` and create a global command `ai-code`.
