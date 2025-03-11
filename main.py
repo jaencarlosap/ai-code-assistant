@@ -3,18 +3,19 @@ import subprocess
 import os
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PYTHON_CMD = "python3"
 
 def run_code_review():
     """Run the code review script."""
-    subprocess.run(["python", os.path.join(SCRIPT_DIR, "codereview.py")])
+    subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "codereview.py")])
 
 def update_script():
     """Run the updater script."""
-    subprocess.run(["python", os.path.join(SCRIPT_DIR, "updater.py")])
+    subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "updater.py")])
 
 def uninstall_script():
     """Run the uninstaller script."""
-    subprocess.run(["python", os.path.join(SCRIPT_DIR, "uninstall.py")])
+    subprocess.run([PYTHON_CMD, os.path.join(SCRIPT_DIR, "uninstall.py")])
 
 def show_help():
     """Display help message."""

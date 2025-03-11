@@ -5,6 +5,7 @@ Flag issues like:
 - Security vulnerabilities.
 - Unused variables.
 - Code efficiency improvements.
+- Ignore the config files and just look through the code changes
 
 For previous steps that are not present just mark with a ❌
 Please just give a feedback when there is a case
