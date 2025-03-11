@@ -36,6 +36,10 @@ def clone_repository():
         print("📥 Cloning AI Code Assistant repository...")
         subprocess.run(["git", "clone", REPO_URL, INSTALL_DIR], check=True)
 
+def install_requirements():
+    """Install the required Python packages."""
+    subprocess.run(["pip3", "install", "-r", f"{INSTALL_DIR}/requirements.txt"], check=True)
+
 def adding_alias():
     """Add the 'ai-code' alias to the shell config file."""
     alias_cmd = f"alias ai-code='python3 {INSTALL_DIR}/main.py'"
@@ -54,6 +58,7 @@ def main():
     print("🚀 Installing AI Code Assistant...")
     check_ollama()
     clone_repository()
+    install_requirements()
     adding_alias()
     print("✅ Installation complete! Run 'ai-code --help' to get started.")
 
