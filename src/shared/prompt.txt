@@ -1,0 +1,21 @@
+Review the following code changes and ensure they follow best practices.  
+
+Ignore These Kind Of Changes:
+- Any dependencies updates.
+- Dependency updates of files like (e.g., `package.json`, `yarn.lock`, `pnpm-lock.yaml`).  
+- Configuration files (e.g., `.eslintrc`, `tsconfig.json`, `.prettierrc`).  
+- Anything related to package management.  
+
+Focus Only On:  
+- Focus only on code logic, best practices, security issues, and import order.  
+- Presence of `console.log` statements.  
+- Security vulnerabilities.  
+- Unused variables.  
+- Code efficiency improvements.  
+- Import order, which should follow this structure:  
+  1. External dependencies  
+  2. Internal dependencies  
+  3. Project styles  
+  4. Type definitions  
+
+If none of the above issues exist, return nothing.

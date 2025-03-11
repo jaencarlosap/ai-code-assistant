@@ -2,10 +2,7 @@ import os
 import shutil
 import subprocess
 import sys
-
-INSTALL_DIR = os.path.expanduser("~/.ai-code-assistant")
-REPO_URL = "https://github.com/jaencarlosap/ai-code-assistant.git"
-MODEL_NAME = "qwen2.5-coder:7b"
+from shared.constants import MODEL_NAME, INSTALL_DIR, REPO_URL
 
 def check_ollama():
     """Check if Ollama is installed, otherwise prompt to install."""

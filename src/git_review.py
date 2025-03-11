@@ -1,34 +1,20 @@
 import subprocess
 import ollama
-import os
-
-# Global model name
-MODEL_NAME = "qwen2.5-coder:7b"
-
-# Determine the directory of the current script and set the prompt file path dynamically
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROMPT_FILE_PATH = os.path.join(SCRIPT_DIR, "prompt.txt")
+from shared.constants import MODEL_NAME, PROMPT_FILE_PATH
 
 def start_ollama():
     """Start the Ollama service in the background."""
     try:
         subprocess.Popen(
             ['ollama', 'serve'],
-            stdout=subprocess.DEVNULL,  # Redirect output to avoid clutter
+            stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             stdin=subprocess.DEVNULL,
-            start_new_session=True  # Ensures it runs independently from the script
+            start_new_session=True  
         )
         print("✅ Ollama service started in the background.")
     except Exception as e:
         print(f"❌ Error starting Ollama service: {e}")
-
-def stop_ollama():
-    """Stop the Ollama service."""
-    try:
-        subprocess.run(['ollama','stop'], check=True)
-    except Exception as e:
-        print(f"❌ Error stopping Ollama service: {e}")
 
 def get_git_changes():
     """Get all unstaged and staged changes from git."""
@@ -39,9 +25,9 @@ def get_git_changes():
         
         changes = ""
         if unstaged_changes:
-            changes += "\n### Unstaged Changes ###\n" + unstaged_changes
+            changes += unstaged_changes
         if staged_changes:
-            changes += "\n### Staged Changes ###\n" + staged_changes
+            changes += staged_changes
 
         return changes.strip()
     except Exception as e:
@@ -51,6 +37,7 @@ def get_git_changes():
 def analyze_code_with_ai(code_diff, model=MODEL_NAME):
     try:
         """Send code changes to an Ollama model for review and stream the response."""
+        prompt_template = ""
         try:
             with open(PROMPT_FILE_PATH, "r") as file:
                 prompt_template = file.read()
@@ -58,11 +45,12 @@ def analyze_code_with_ai(code_diff, model=MODEL_NAME):
             print(f"❌ Error: prompt file not found at {PROMPT_FILE_PATH}.")
             return ""
         
-        prompt = prompt_template.format(code_diff=code_diff)
-        
         print("🤖 AI is thinking...\n")
         
-        stream = ollama.chat(model=model, messages=[{"role": "user", "content": prompt}], stream=True)
+        stream = ollama.chat(model=model, messages=[
+            {"role": "user", "content": prompt_template},
+            {"role": "user", "content": code_diff},
+        ], stream=True)
         
         print("💡 Suggestions:\n")
         for chunk in stream:
@@ -84,10 +72,8 @@ def main():
         
         print("\n🔍 Analyzing code changes...\n")
         analyze_code_with_ai(git_changes)
-        stop_ollama()
     except KeyboardInterrupt:
         print("\n🛑 AI processing interrupted.")
-        stop_ollama()
         return
     except Exception as e:
         print(f"❌ Error analyzing code with AI: {e}")

@@ -2,7 +2,7 @@ import sys
 import subprocess
 import os
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) + "/src"
 PYTHON_CMD = "python3"
 
 def run_code_review():
