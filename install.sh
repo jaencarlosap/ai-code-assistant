@@ -5,8 +5,8 @@ set -e
 
 echo "🚀 Installing AI Code Assistant..."
 
-# Define install directory
-INSTALL_DIR="$HOME/.ai-code-assistant"
+# Define temp directory
+INSTALL_DIR="/tmp/ai-code-assistant"
 
 # Create install directory
 mkdir -p "$INSTALL_DIR"
@@ -18,6 +18,10 @@ curl -fsSL -o "$INSTALL_DIR/install.py" "https://raw.githubusercontent.com/jaenc
 # Run Python install script
 echo "⚙️ Running installation..."
 python3 "$INSTALL_DIR/install.py"
+
+# Cleanup
+echo "🧹 Cleaning up..."
+rm -rf "$INSTALL_DIR"
 
 echo "✅ Installation completed!"
 echo "➡️ Run 'ai-code --help' to get started."
